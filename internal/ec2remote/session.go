@@ -52,7 +52,7 @@ func (as *AWSSession) InstanceState(instanceID *string) (string, error) {
 	ids = append(ids, instanceID)
 	allInstance := true
 	input := ec2.DescribeInstanceStatusInput{
-		InstanceIds: ids,
+		InstanceIds:         ids,
 		IncludeAllInstances: &allInstance,
 	}
 	output, err := as.ec2Client.DescribeInstanceStatus(&input)

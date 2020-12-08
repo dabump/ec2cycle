@@ -12,6 +12,15 @@ EC2Cycle provides:
 * Use of [cobra](https://github.com/spf13/cobra) for CLI command scaffolding
 * Use of [AWS SDK for GO](https://aws.amazon.com/sdk-for-go/) libraries to create a AWS session and AWS EC2 Client instance 
 
+# Build
+In order to build the project and create executable, you need to have GO 1.15 or higher installed
+
+```shell script
+cd ~/cmd/ec2cycle
+go build
+./ec2cycle ...
+```
+
 # Commands
 * View the state of instance `./ec2cycle state`
 * Start the instance `./ec2cycle start`

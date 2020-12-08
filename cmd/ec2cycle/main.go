@@ -4,7 +4,7 @@ import (
 	"ec2cycle/internal/config"
 	"ec2cycle/internal/ec2remote"
 	"fmt"
-    "github.com/spf13/cobra"
+	"github.com/spf13/cobra"
 	"os"
 )
 
@@ -34,7 +34,8 @@ var instanceStateCmd = &cobra.Command{
 		if err != nil {
 			fmt.Printf("Error %v", err)
 		}
-		fmt.Printf("Instance state: %s\n", state)	},
+		fmt.Printf("Instance state: %s\n", state)
+	},
 }
 
 var instanceStartCmd = &cobra.Command{
