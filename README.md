@@ -16,7 +16,6 @@ EC2Cycle provides:
 In order to build the project and create executable, you need to have GO 1.15 or higher installed
 
 ```shell script
-cd ~/cmd/ec2cycle
 go build
 ./ec2cycle ...
 ```
