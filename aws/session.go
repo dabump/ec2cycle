@@ -1,7 +1,7 @@
-package ec2remote
+package aws
 
 import (
-	"ec2cycle/internal/config"
+	"ec2cycle/config"
 	"errors"
 	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
@@ -11,21 +11,21 @@ import (
 	"os"
 )
 
-type AWSSession struct {
+type Session struct {
 	awsSession *session.Session
 	ec2Client  *ec2.EC2
 }
 
-func NewSession(config *config.AppConfig) *AWSSession {
+func NewSession(config *config.AppConfig) *Session {
 	ses := session.Must(session.NewSession(&aws.Config{
 		Region:      aws.String(*config.GetAWSRegion()),
 		Credentials: credentials.NewStaticCredentials(*config.GetAccessKey(), *config.GetSecretAccessKey(), ""),
 	}))
 	ec2Client := ec2.New(ses)
-	return &AWSSession{awsSession: ses, ec2Client: ec2Client}
+	return &Session{awsSession: ses, ec2Client: ec2Client}
 }
 
-func (as *AWSSession) StartInstance(instanceID *string) {
+func (as *Session) Start(instanceID *string) {
 	var ids []*string
 	ids = append(ids, instanceID)
 	input := ec2.StartInstancesInput{InstanceIds: ids}
@@ -36,7 +36,7 @@ func (as *AWSSession) StartInstance(instanceID *string) {
 	}
 }
 
-func (as *AWSSession) StopInstance(instanceID *string) {
+func (as *Session) Stop(instanceID *string) {
 	var ids []*string
 	ids = append(ids, instanceID)
 	input := ec2.StopInstancesInput{InstanceIds: ids}
@@ -47,7 +47,7 @@ func (as *AWSSession) StopInstance(instanceID *string) {
 	}
 }
 
-func (as *AWSSession) InstanceState(instanceID *string) (string, error) {
+func (as *Session) State(instanceID *string) (string, error) {
 	var ids []*string
 	ids = append(ids, instanceID)
 	allInstance := true

@@ -18,16 +18,16 @@ func (ac *AppConfig) GetAccessKey() *string {
 	return &ac.accessKey
 }
 
-func (ac *AppConfig) GetSecretAccessKey() *string {
-	return &ac.secretAccessKey
-}
-
 func (ac *AppConfig) GetAWSRegion() *string {
 	return &ac.region
 }
 
 func (ac *AppConfig) GetEC2Instance() *string {
 	return &ac.ec2Instance
+}
+
+func (ac *AppConfig) GetSecretAccessKey() *string {
+	return &ac.secretAccessKey
 }
 
 func LoadConfig() *AppConfig {
@@ -46,10 +46,10 @@ func LoadConfig() *AppConfig {
 	if err != nil {
 		fmt.Printf("Unexpected error while reading config %v", err)
 	}
-	ac.accessKey = fmt.Sprint(vp.Get("accessKey"))
-	ac.secretAccessKey = fmt.Sprint(vp.Get("secretAccessKey"))
-	ac.ec2Instance = fmt.Sprint(vp.Get("ec2Instance"))
 	ac.region = fmt.Sprint(vp.Get("region"))
+	ac.accessKey = fmt.Sprint(vp.Get("accessKey"))
+	ac.ec2Instance = fmt.Sprint(vp.Get("ec2Instance"))
+	ac.secretAccessKey = fmt.Sprint(vp.Get("secretAccessKey"))
 	return &ac
 }
 
@@ -58,10 +58,10 @@ func initializeConfig(apc *configFile, vp *viper.Viper) {
 	if err != nil {
 		fmt.Printf("Could not create config file [%v]\n", apc.create())
 	}
-	vp.Set("accessKey", "<access key>")
-	vp.Set("secretAccessKey", "<access secret key>")
-	vp.Set("ec2Instance", "<instance id>")
 	vp.Set("region", "ap-southeast-2")
+	vp.Set("accessKey", "<access key>")
+	vp.Set("ec2Instance", "<instance id>")
+	vp.Set("secretAccessKey", "<access secret key>")
 	err = vp.WriteConfigAs(apc.path())
 	if err != nil {
 		fmt.Printf("Serious error %v \n", err)

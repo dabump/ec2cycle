@@ -1,14 +1,14 @@
 package main
 
 import (
-	"ec2cycle/internal/config"
-	"ec2cycle/internal/ec2remote"
+	"ec2cycle/aws"
+	"ec2cycle/config"
 	"fmt"
 	"github.com/spf13/cobra"
 	"os"
 )
 
-var version = "v0.1alpha"
+var version = "v0.2alpha"
 
 var rootCmd = &cobra.Command{
 	Use:   "ec2cycle",
@@ -29,8 +29,8 @@ var instanceStateCmd = &cobra.Command{
 	Long:  `Pokes at AWS to fetch the state of the AWS instance`,
 	Run: func(cmd *cobra.Command, args []string) {
 		ac := config.LoadConfig()
-		awsSession := ec2remote.NewSession(ac)
-		state, err := awsSession.InstanceState(ac.GetEC2Instance())
+		awsSession := aws.NewSession(ac)
+		state, err := awsSession.State(ac.GetEC2Instance())
 		if err != nil {
 			fmt.Printf("Error %v", err)
 		}
@@ -44,8 +44,8 @@ var instanceStartCmd = &cobra.Command{
 	Long:  `Starts the AWS instance`,
 	Run: func(cmd *cobra.Command, args []string) {
 		ac := config.LoadConfig()
-		awsSession := ec2remote.NewSession(ac)
-		awsSession.StartInstance(ac.GetEC2Instance())
+		awsSession := aws.NewSession(ac)
+		awsSession.Start(ac.GetEC2Instance())
 		fmt.Println("Starting instance")
 	},
 }
@@ -56,8 +56,8 @@ var instanceStopCmd = &cobra.Command{
 	Long:  `Stops the AWS instance`,
 	Run: func(cmd *cobra.Command, args []string) {
 		ac := config.LoadConfig()
-		awsSession := ec2remote.NewSession(ac)
-		awsSession.StopInstance(ac.GetEC2Instance())
+		awsSession := aws.NewSession(ac)
+		awsSession.Stop(ac.GetEC2Instance())
 		fmt.Println("Stopping instance")
 	},
 }

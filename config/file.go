@@ -12,13 +12,9 @@ type configFile struct {
 
 func newConfigFile() *configFile {
 	return &configFile{
-		configName: "config",
 		configType: "yaml",
+		configName: "config",
 	}
-}
-
-func (ac *configFile) path() string {
-	return filepath.Join(ac.configName + "." + ac.configType)
 }
 
 func (ac *configFile) exists() bool {
@@ -32,4 +28,8 @@ func (ac *configFile) exists() bool {
 func (ac *configFile) create() error {
 	_, err := os.Create(ac.path())
 	return err
+}
+
+func (ac *configFile) path() string {
+	return filepath.Join(ac.configName + "." + ac.configType)
 }
