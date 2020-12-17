@@ -16,7 +16,7 @@ type Session struct {
 	ec2Client  *ec2.EC2
 }
 
-func NewSession(config *config.AppConfig) *Session {
+func NewSession(config config.AppConfig) *Session {
 	ses := session.Must(session.NewSession(&aws.Config{
 		Region:      aws.String(*config.GetAWSRegion()),
 		Credentials: credentials.NewStaticCredentials(*config.GetAccessKey(), *config.GetSecretAccessKey(), ""),

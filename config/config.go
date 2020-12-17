@@ -7,31 +7,38 @@ import (
 	"os"
 )
 
-type AppConfig struct {
+type AppConfig interface {
+	GetAccessKey() *string
+	GetAWSRegion() *string
+	GetEC2Instance() *string
+	GetSecretAccessKey() *string
+}
+
+type fileConfig struct {
 	accessKey       string
 	secretAccessKey string
 	region          string
 	ec2Instance     string
 }
 
-func (ac *AppConfig) GetAccessKey() *string {
+func (ac *fileConfig) GetAccessKey() *string {
 	return &ac.accessKey
 }
 
-func (ac *AppConfig) GetAWSRegion() *string {
+func (ac *fileConfig) GetAWSRegion() *string {
 	return &ac.region
 }
 
-func (ac *AppConfig) GetEC2Instance() *string {
+func (ac *fileConfig) GetEC2Instance() *string {
 	return &ac.ec2Instance
 }
 
-func (ac *AppConfig) GetSecretAccessKey() *string {
+func (ac *fileConfig) GetSecretAccessKey() *string {
 	return &ac.secretAccessKey
 }
 
-func LoadConfig() *AppConfig {
-	ac := AppConfig{}
+func LoadConfig() AppConfig {
+	ac := fileConfig{}
 	apc := newConfigFile()
 	vp := viper.New()
 	vp.SetConfigType("yaml")
@@ -53,7 +60,7 @@ func LoadConfig() *AppConfig {
 	return &ac
 }
 
-func initializeConfig(apc *configFile, vp *viper.Viper) {
+func initializeConfig(apc configFile, vp *viper.Viper) {
 	err := apc.create()
 	if err != nil {
 		fmt.Printf("Could not create config file [%v]\n", apc.create())

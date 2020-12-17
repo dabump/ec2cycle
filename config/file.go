@@ -5,19 +5,25 @@ import (
 	"path/filepath"
 )
 
-type configFile struct {
+type file struct {
 	configName string
 	configType string
 }
 
-func newConfigFile() *configFile {
-	return &configFile{
+type configFile interface {
+	path() string
+	exists() bool
+	create() error
+}
+
+func newConfigFile() configFile {
+	return &file{
 		configType: "yaml",
 		configName: "config",
 	}
 }
 
-func (ac *configFile) exists() bool {
+func (ac *file) exists() bool {
 	_, err := os.Stat(ac.path())
 	if err == nil {
 		return true
@@ -25,11 +31,11 @@ func (ac *configFile) exists() bool {
 	return os.IsExist(err)
 }
 
-func (ac *configFile) create() error {
+func (ac *file) create() error {
 	_, err := os.Create(ac.path())
 	return err
 }
 
-func (ac *configFile) path() string {
+func (ac *file) path() string {
 	return filepath.Join(ac.configName + "." + ac.configType)
 }
