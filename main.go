@@ -28,11 +28,16 @@ var instanceStateCmd = &cobra.Command{
 	Short: "Output instance state",
 	Long:  `Pokes at AWS to fetch the state of the AWS instance`,
 	Run: func(cmd *cobra.Command, args []string) {
-		ac := config.LoadConfig()
+		ac, err := config.LoadConfig()
+		if err != nil {
+			fmt.Println(err.Error())
+			os.Exit(1)
+		}
 		awsSession := aws.NewSession(ac)
 		state, err := awsSession.State(ac.GetEC2Instance())
 		if err != nil {
-			fmt.Printf("Error %v", err)
+			fmt.Println(err.Error())
+			os.Exit(1)
 		}
 		fmt.Printf("Instance state: %s\n", state)
 	},
@@ -43,7 +48,11 @@ var instanceStartCmd = &cobra.Command{
 	Short: "Start instance",
 	Long:  `Starts the AWS instance`,
 	Run: func(cmd *cobra.Command, args []string) {
-		ac := config.LoadConfig()
+		ac, err := config.LoadConfig()
+		if err != nil {
+			fmt.Println(err.Error())
+			os.Exit(1)
+		}
 		awsSession := aws.NewSession(ac)
 		awsSession.Start(ac.GetEC2Instance())
 		fmt.Println("Starting instance")
@@ -55,7 +64,11 @@ var instanceStopCmd = &cobra.Command{
 	Short: "Stop instance",
 	Long:  `Stops the AWS instance`,
 	Run: func(cmd *cobra.Command, args []string) {
-		ac := config.LoadConfig()
+		ac, err := config.LoadConfig()
+		if err != nil {
+			fmt.Println(err.Error())
+			os.Exit(1)
+		}
 		awsSession := aws.NewSession(ac)
 		awsSession.Stop(ac.GetEC2Instance())
 		fmt.Println("Stopping instance")
