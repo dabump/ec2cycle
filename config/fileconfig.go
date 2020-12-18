@@ -23,14 +23,22 @@ func LoadConfig() (AppConfig, error) {
 	if err != nil {
 		return nil, fmt.Errorf("unexpected error while reading config file\n%v", err)
 	}
+	if region := vp.Get("region"); region != nil {
+		ac.region = fmt.Sprint(region)
+	}
+	if accessKey := vp.Get("accessKey"); accessKey != nil {
+		ac.accessKey = fmt.Sprint(accessKey)
+	}
+	if ec2Instance := vp.Get("ec2Instance"); ec2Instance != nil {
+		ac.ec2Instance = fmt.Sprint(ec2Instance)
+	}
+	if secretAccessKey := vp.Get("secretAccessKey"); secretAccessKey != nil {
+		ac.secretAccessKey = fmt.Sprint(secretAccessKey)
+	}
 	err = ac.Valid()
 	if err != nil {
 		return nil, fmt.Errorf("missing config\n%v", err)
 	}
-	ac.region = fmt.Sprint(vp.Get("region"))
-	ac.accessKey = fmt.Sprint(vp.Get("accessKey"))
-	ac.ec2Instance = fmt.Sprint(vp.Get("ec2Instance"))
-	ac.secretAccessKey = fmt.Sprint(vp.Get("secretAccessKey"))
 	return &ac, nil
 }
 

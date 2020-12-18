@@ -1,7 +1,8 @@
 package config
 
+import "errors"
+
 type AppConfig interface {
-	Valid() error
 	GetAccessKey() *string
 	GetAWSRegion() *string
 	GetEC2Instance() *string
@@ -32,6 +33,17 @@ func (ac *config) GetSecretAccessKey() *string {
 }
 
 func (ac *config) Valid() error {
-	// TODO implement validation
+	if ac.accessKey == "" {
+		return errors.New("accessKey value was not specified in the config file")
+	}
+	if ac.secretAccessKey == "" {
+		return errors.New("secretAccessKey value was not specified in the config file")
+	}
+	if ac.region == "" {
+		return errors.New("region value was not specified in the config file")
+	}
+	if ac.ec2Instance == "" {
+		return errors.New("ec2Instance value was not specified in the config file")
+	}
 	return nil
 }
